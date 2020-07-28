@@ -1,0 +1,778 @@
+<section id="calendario">
+  <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center mb-5">
+          <h2>Calendario</h2>
+        </div>
+      </div>
+  </div>
+  <div id="calendrier" class="mx-3"></div>
+</section>
+
+
+<!-- Modal -->
+<div id="myModal"></div>
+  
+
+
+
+
+
+
+
+
+
+
+<script>
+   var x;
+   var y; 
+
+window.onload = () => {           
+
+ // let globalStart='';
+ // let globalEnd='';
+ // let activeStart,activeEnd;
+ /*var token = window.localStorage.getItem('token');
+                       headers: {
+                        "Content-Type": "application/json",
+                        "token": token
+                      },*/
+ 
+
+  let calendarEl = document.getElementById('calendrier');
+  let calendar = new FullCalendar.Calendar(calendarEl, {
+    // On charge le composant "dayGrid"
+    plugins: [ 'dayGrid','dayGridWeek', 'list', 'interaction','timeGrid' ],
+    defaultView: 'dayGridMonth',
+              
+    slotDuration : '00:15:00',
+    minTime : '06:00:00',
+    maxTime : '22:00:00',
+    allDaySlot :false,
+    header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+              },
+    locale :'Es',
+    buttonText: {
+                  today:    'Hoy',
+                  month:    'Mes',
+                  week:     'Semana',
+                  day:      'Dia',
+                  list:     'Lista'
+              },
+    selectable: true,
+    editable: true,
+    timeZone: 'UTC',
+    height: 'auto',
+    //events:evenements, 
+    eventSourceSuccess: function(content, xhr) {
+        return content.events;
+    },
+    events:getEvents,
+
+    //events:'http://localhost:3000/calendar/events',
+    //'http://localhost:4000/calendar/events?desde="2020-07-07T10:00:00Z"&hasta="2020-07-09T10:00:00Z"',
+        
+    eventRender: eventRender,
+    eventDrop: (info) => {
+                  // alert( info.event.start);
+                  //console.log(info.event, info.dateStr, info.view.type);
+    },
+    eventResize: eventResize,
+    select: addEvent,
+            
+            
+    //dateClick : addEvent,
+    unselect:function(info) {
+                    //alert('unselect');
+    },
+                
+    eventClick : eventClick,
+    datesRender: rangoRender,
+    eventDragStart:eventDragStart, //Se activa cuando comienza el arrastre de eventos
+    eventDrop:eventDrop, //Se activa cuando se detiene el arrastre y el evento se ha movido a un día / hora diferente
+    eventResizeStart : eventResizeStart,
+    eventResizeStop : eventResizeStop,
+    eventDragStop:eventDragStop, //Se activa cuando se detiene el arrastre de eventos.
+    drop:drop,
+  });
+  calendar.render();
+
+//==========================================================================================
+//  la fuente de evento es automatica cuando se pulsa teclas cambio de mes o cambio de vista
+//  https://fullcalendar.io/docs/v4/events-function
+//  se puede usar eventSourceSuccess: y events: para hacerlo manualmente y agrego el token
+//  JWT para pasarlo al servidor. llamo events:getEvents cuando retorna se ejecuta eventSourceSuccess
+//==========================================================================================
+
+function getEvents(info, successCallback, failureCallback){
+  const start = info.start.valueOf();
+  const end = info.end.valueOf();
+  const url = 'http://localhost:3000/calendar/events?start='+start+'&end='+end;
+  const token = window.localStorage.getItem('token');
+  fetch(url, {
+        method: 'GET', // or 'PUT'
+        //body: JSON.stringify(data), 
+        headers:{
+          'Content-Type': 'application/json' ,  
+          'token' : token
+        }
+  })
+    .catch(error => console.error('Error:', error))
+    .then(res => res.json())
+    .then(response => {
+          //console.log('Success:', response);
+          //const aaa=JSON.stringify(response.events);
+          successCallback(response);
+
+    });//then
+}
+
+
+
+//*****************************trabajando aqui
+//==================================================================
+//  eventResize: eventResize
+//  Se activa cuando el cambio de tamaño se detiene y el evento ha cambiado en duración.
+//  https://fullcalendar.io/docs/v4/eventResize
+//==================================================================
+function eventResize(info){
+  console.log('eventResize');
+  console.log(info.event.extendedProps._id);
+  const token = window.localStorage.getItem('token');
+    // UPDATE 
+    var url = 'http://localhost:3000/calendar/update/'+info.event.extendedProps._id;
+    
+    var data = {title: info.event.title, 
+                description:info.event.description,
+                start:info.event.start.toISOString(), 
+                end:info.event.end.toISOString(),
+                backgroundColor :info.event.background, 
+              
+              };
+      fetch(url, {
+        method: 'PUT', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json',  
+            'token' : token,
+            
+        }
+      })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response); 
+          window.FlashMessage.info('Actualizado con exito', {progress: true,timeout: 5000});
+
+          //calendar.refetchEvents ();
+        });
+        
+}
+
+
+//==================================================================
+//  drop:drop,
+// Se invoca cuando un elemento externo arrastrable o un evento de otro calendario se ha 
+// soltado en el calendario
+//==================================================================
+function drop(info){
+    console.log('drop');
+
+    
+}
+
+
+
+//==================================================================
+//  eventDragStop:eventDragStop
+// Se activa cuando se detiene el arrastre de eventos.Se garantiza que esta devolución de 
+// llamada se activará después de que el usuario arrastre un evento, incluso si el evento no 
+// cambia la fecha / hora. Se activa antes de que se haya modificado la información del evento 
+// (si se ha movido a una nueva fecha / hora) y antes de que se active la devolución de llamada
+// eventDrop .
+// https://fullcalendar.io/docs/v4/eventDragStop
+//==================================================================
+function eventDragStop(info){
+  console.log('eventDragStop');
+}
+
+
+
+//==================================================================
+//  eventResizeStop : eventResizeStop
+// Se activa cuando se detiene el cambio de tamaño del evento.
+// https://fullcalendar.io/docs/v4/eventResizeStop
+//==================================================================
+function  eventResizeStop(info){
+   console.log('eventResizeStop');
+}
+
+
+
+//==================================================================
+//  eventResizeStart : eventResizeStart
+// Se activa cuando comienza el cambio de tamaño del evento.
+// https://fullcalendar.io/docs/v4/eventResizeStart
+//==================================================================
+function  eventResizeStart(info){
+  console.log('eventResizeStart');
+}
+
+
+
+
+//==================================================================
+// eventDrop:eventDrop
+// Se activa cuando se detiene el arrastre y el evento se ha movido a un día / hora diferente .
+// https://fullcalendar.io/docs/v4/eventDrop
+//==================================================================
+function eventDrop(info){
+  console.log('eventDrop');
+  //console.log(info);
+  const token = window.localStorage.getItem('token');
+  // UPDATE 
+  
+    var url = 'http://localhost:3000/calendar/update/'+info.event.extendedProps._id;
+    console.log(url);
+    var data = {title: info.event.title, 
+                description:info.event.description,
+                start:info.event.start.toISOString(), 
+                end:info.event.end.toISOString(),
+                backgroundColor :info.event.background,
+              
+              };
+      fetch(url, {
+        method: 'PUT', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json' , 
+             'token' : token, 
+        }
+      })
+        .then( res => res.json()  )
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+          //console.log(typeof response);
+          window.FlashMessage.info('Actualizado con exito', {progress: true,timeout: 5000});
+
+           
+          //calendar.refetchEvents ();
+        });
+        
+}
+
+
+
+//==================================================================
+// eventDragStart
+// Se activa cuando comienza el arrastre de eventos
+// https://fullcalendar.io/docs/v4/event-dragging-resizing
+//==================================================================
+function eventDragStart(info){ 
+  console.log('eventDragStart');
+
+  
+}
+
+
+
+
+//==================================================================
+// datesRender: rangoRender
+// https://fullcalendar.io/docs/v4/datesRender
+// Triggered when a new set of dates has been rendered.
+// set variables globales para la consulta por rango a la base de datos
+// https://fullcalendar.io/docs/v4/date-object
+// 
+//==================================================================
+function rangoRender(info) {
+  console.log('eventResize');
+    
+ /* start = new Date(info.view.activeStart);  
+  end = new Date (info.view.activeEnd  );   
+  activeStart = start;
+  activeEnd = end;
+*/
+
+  //console.log(start.toISOString()+':'+ end.toISOString());
+         
+            
+}
+
+//==================================================================
+// eventRender: eventRender
+// Se dispara mientras se procesa un evento. Un gancho para modificar su DOM
+// La función también puede devolver un elemento nuevo que se utilizará para renderizar.
+// Para eventos de fondo de todo el día , debe asegurarse de devolver a <td>.
+//  https://fullcalendar.io/docs/v4/eventRender
+//
+//  View Object   https://fullcalendar.io/docs/v4/view-object
+//  Un objeto view contiene información sobre una vista de calendario, como el título y el 
+//  rango de fechas. Esta información sobre la vista actual se pasa a casi todos los 
+//  controladores .
+//==================================================================
+function eventRender(info) {
+
+
+  console.log('eventRender');
+  var html= info.el;
+  //console.log(info.event.extendedProps._id);
+  //console.log(html);
+  
+ 
+
+  const variable='background-color: transparent; color: #1c100b;';
+  html.style.cssText = variable;
+  //agregar el id
+  //html.setAttribute('data-value', info.event.extendedProps._id);
+
+/*
+  //* Aqui el tooltip
+    html.setAttribute('data-toggle', 'tooltip');
+    html.setAttribute('data-placement', "right");
+    html.setAttribute('data-original-title',
+        '<p class="card-title">'+info.event.extendedProps.description+' </p>'+
+          '<span  class=""> '+getUTChm(info.event.start)+
+          ' hasta '+getUTChm(info.event.end)+'</span>'           
+                    );
+    // info.el agregarle clase data-toggle="tooltip" 
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip({
+        html : true
+      });  
+    }); // Fin function eventRender
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+  //element.style.backgroundColor = "#e07b39";
+
+  
+  
+  //console.log( info.view.activeStart );
+    /*console.log(info.el);
+    if(event.title) {
+      element.css('background-color', backgroundColor);
+        //console.log('si');
+      }*/
+     
+   /* var tooltip = new Tooltip(info.el, {
+      title: info.event.extendedProps.description,
+      placement: 'top',
+      trigger: 'hover',
+      container: 'body'
+    );*/
+}
+
+
+
+
+
+
+//==================================================================
+//  select: addEvent
+//  agrega un nuevo evento al calendario
+//
+//==================================================================
+function addEvent(info) {
+ console.log('addEvent');
+  var modalObject = {
+    titleEvent:'',
+    descriptionEvent : '',
+    start : info.startStr,
+    end : info.endStr,
+    btnAdd: true,
+    btnUpdate : false,
+    btnDelete: false,
+    id:'',
+    phoneEvent:''
+  }
+
+   //si se produce en dayGridMonth a dia se resta 1
+  if(calendar.view.type == 'dayGridMonth'){
+    let fecha = new Date(modalObject.end);
+    modalObject.end = sumarDias(fecha, -1).toISOString() ;
+  }
+  modal(modalObject);
+  //calendar.changeView('dayGridMonth');
+  
+}
+
+//==================================================================
+//   eventClick : eventClick
+//   Se activa cuando el usuario hace clic en un evento.
+//==================================================================
+function eventClick(info){
+  console.log('eventClick');
+
+  var modalObject = {
+    titleEvent:info.event.title,
+    descriptionEvent : info.event.extendedProps.description,
+    start : info.event.start,
+    end : info.event.end,
+    btnAdd: false,
+    btnUpdate : true,
+    btnDelete: true,
+    id:info.event.extendedProps._id,
+    phoneEvent:info.event.extendedProps.phone
+  }
+
+  modal(modalObject);
+}
+
+
+
+
+
+//==================================================================
+//
+// Boton DELETE btnDelete
+//
+//==================================================================
+$(document).on('click','#btnDelete',function(){
+
+console.log('delete');
+    var url = 'http://localhost:3000/calendar/delete/'+$('#id').val();
+    console.log(url);
+    var data = {};
+    const token = window.localStorage.getItem('token');
+      fetch(url, {
+        method: 'DELETE', 
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json' ,  
+            'token' : token
+        }
+      })
+        .then( res => res.json()  )
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+          console.log(typeof response);
+      
+        
+          window.FlashMessage.error('Eliminado con exito', {progress: true,timeout: 5000});
+           calendar.refetchEvents ();
+        });
+});
+
+
+
+//==================================================================
+// Boton UPDATE btnUpdate
+// Usa fetch() para enviar una petición POST con datos codificados en JSON .
+//==================================================================
+$(document).on('click','#btnUpdate',function(){
+
+ console.log('btnUpdate' + $('#start').val());
+
+  // toma datos del formulario que vienen en formato "24 de julio..." => TimeZone 
+  var strStart = new Date($('#start').val()).toISOString(); //formato TimeZone
+  var strEnd = new Date($('#end').val()).toISOString(); //formato TimeZone
+  let cadIni=String( strStart.substring(0,11)) ;
+  let cadEnd=String( strStart.substring(16,strStart.length )) ;
+  const start=cadIni+$('#hoursStart').val()+cadEnd;
+  cadIni=String( strEnd.substring(0,11)) ;
+  cadEnd=String( strEnd.substring(16,strEnd.length )) ;
+  const end=cadIni+$('#hoursEnd').val()+cadEnd;
+
+
+
+  if( $('#titleEvent').val().length &&  $('#descriptionEvent').val().length){
+    const token = window.localStorage.getItem('token');
+    var url = 'http://localhost:3000/calendar/update/'+$('#id').val();
+    console.log(url);
+    var data = {title: $('#titleEvent').val(), 
+                description:$('#descriptionEvent').val(),
+                start:start, 
+                end:end,
+                backgroundColor :'fff',
+                phone:$('#phone').val()
+              };
+      fetch(url, {
+        method: 'PUT', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+        
+             'Content-Type': 'application/json' , 
+             'token' : token, 
+        }
+      })
+        .then( res => res.json()  )
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+          console.log(typeof response);
+      
+          window.FlashMessage.info('Actualizado con exito', {progress: true,timeout: 5000});
+          //calendar.refetchEvents ();
+        });
+
+  }
+});
+
+
+
+
+
+
+//==================================================================
+// Boton AGREGAR btnagregar
+// Usa fetch() para enviar una petición POST con datos codificados en JSON .
+//==================================================================
+$(document).on('click','#btnagregar',function(){
+  
+console.log('agregar');
+  //tomo el timeZone y si se modifica la hora lo corrijo 
+  let cadIni=String( $('#start').val().substring(0,11)) ;
+  let cadEnd=String( $('#start').val().substring(16,$('#start').val().length )) ;
+  const start=cadIni+$('#hoursStart').val()+cadEnd;
+  cadIni=String( $('#end').val().substring(0,11)) ;
+  cadEnd=String( $('#end').val().substring(16,$('#end').val().length )) ;
+  const end=cadIni+$('#hoursEnd').val()+cadEnd;
+
+
+
+
+
+  //comparo las 2 fechas
+  let startTime=new Date(start);
+  let endTime=new Date(end);
+
+
+
+
+  //verificacion que haya texto en los campos
+  if( $('#titleEvent').val().length &&  $('#descriptionEvent').val().length  &&
+       startTime<endTime) {
+    const token = window.localStorage.getItem('token');     
+    var url = 'http://localhost:3000/calendar/add';
+    var data = {title: $('#titleEvent').val(), 
+                description:$('#descriptionEvent').val(),
+                start:start, 
+                end:end,
+                backgroundColor :'fff',
+                phone:$('#phone').val()
+                
+              };
+      fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json' , 
+             'token' : token, 
+        }
+      })
+        .then( res => res.json()  )
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+          console.log(typeof response);
+        
+          window.FlashMessage.success(
+            'Agregado con exito', {
+            progress: true,
+            timeout: 5000,
+            container:'flash-container' }
+          );
+
+           
+          calendar.refetchEvents ();
+        });
+
+
+      
+
+  }//if
+ });
+
+
+
+ 
+//==================================================================
+// function modal =>  recibe un objeto 
+//
+// 
+//==================================================================
+function modal(obj){
+
+  console.log('Modal');     
+  let start = new Date(obj.start);
+  let strStart = start.toISOString();
+  let end = new Date(obj.end);
+  let strEnd = end.toISOString();
+
+        
+
+
+  if(calendar.view.type == 'dayGridMonth'){ // Mes  2020-07-04
+    //vista del mes 
+    console.log('dayGridMonth');
+  } 
+  if(calendar.view.type == 'timeGridWeek'){  // Semana 2020-07-11T06:45:00Z
+    //vista del mes agrego 
+    console.log('timeGridWeek');
+  } 
+  if(calendar.view.type  == 'timeGridDay'){ //2020-07-10T07:00:00Z
+    console.log('timeGridDay');
+  } 
+
+  //const date = new Date(obj.start);
+  const dia= start.getUTCDate()+'/'+ (start.getUTCMonth()+1)+'/'+start.getUTCFullYear();
+  const modalHtml=
+  '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+      '<div class="modal-dialog" role="document">'+
+        '<div class="modal-content">'+
+          '<div class="modal-header">'+
+            '<h5 class="modal-title" id="fecha">Fecha  '+dia+'</h5>'+
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                '<span aria-hidden="true">&times;</span>'+
+              '</button>'+
+          '</div>'+
+          '<div class="modal-body">'+
+            '<div id="description"></div>'+
+              '<div class="form">'+
+                '<div class="form-group row">'+
+                  '<label  class="col-2 col-form-label" id>Telefono</label>'+
+                  '<div class="col-10">'+
+                    '<input  type="text" class="form-control" id="phone" value="'+obj.phoneEvent+'">'+
+                  '</div>'+
+                '</div>'+ 
+                '<div class="form-group row">'+
+                  '<label  class="col-2 col-form-label">Titulo</label>'+
+                  '<div class="col-10">'+
+                    '<input  type="text" class="form-control" name="titleEvent" id="titleEvent" value="'+obj.titleEvent+'"required />'+
+                  '</div>'+
+                '</div>'+        
+                '<div class="form-group row">'+
+                  '<label  class="col-2 col-form-label">Descripcion</label>'+
+                '<div class="col-10">'+
+                  '<input  type="text" class="form-control" id="descriptionEvent" value="'+obj.descriptionEvent+'">'+
+                '</div>'+
+              '</div>'+
+              '<div class="form-group row">'+
+                '<label  class="col-2 col-form-label">hora</label>'+
+              '<div class="col-5">'+
+                '<input data-val="true" class="form-control" id="hoursStart"'+
+                        'data-val-regex="Invalid Time." '+
+                        'data-val-regex-pattern="^(0[1-9]|1[0-2]):[0-5][0-9] (am|pm|AM|PM)$"'+
+                        'name="StartTime" type="time" value="'+getUTChm(obj.start)+'" />'+     
+                '<small id="emailHelp" class="form-text text-muted">desde</small>'+   
+              '</div>' +  
+              '<div class="col-5">'+
+              '<input data-val="true" class="form-control" id="hoursEnd"'+
+                        'data-val-regex="Invalid Time."'+
+                        'data-val-regex-pattern="^(0[1-9]|1[0-2]):[0-5][0-9] (am|pm|AM|PM)$"'+
+                        'name="StartTime" type="time" value="'+getUTChm(obj.end)+'" />'+     
+                '<small id="emailHelp" class="form-text text-muted">hasta</small>'+   
+              '</div>' + 
+            '</div>'+  
+            '<input type="hidden" id="start" name="start" value="'+strStart+'">'+
+            '<input type="hidden" id="end" name="end" value="'+strEnd+'">'+
+            '<input type="hidden" id="id" name="id" value="'+obj.id+'">'+                        
+          '</div>'+
+        '</div>'+
+        '<div class="modal-footer"  id="modal-footer">'+                        
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  {{#if modal}}
+    document.getElementById('myModal').innerHTML =modalHtml;//construyo el modal
+
+        let buttonHtml='<button type="button" class="btn btn-primary" data-dismiss="modal" id="btncancelar">Cancelar</button>';
+        //agrego los botones
+        if(obj.btnAdd)
+            buttonHtml += '<button type="button" class="btn btn-success" data-dismiss="modal"  id="btnagregar" >Agregar</button>';
+        
+        if(obj.btnDelete)
+                buttonHtml += '<button type="button" class="btn btn-danger" data-dismiss="modal"  id="btnDelete">Eliminar</button>';
+        
+        if(obj.btnUpdate)
+            buttonHtml += '<button type="button" class="btn btn-warning" data-dismiss="modal"  id="btnUpdate">Actualizar</button>';
+
+        document.getElementById('modal-footer').innerHTML = buttonHtml;
+  {{/if}}
+
+
+  $('#exampleModal').modal();
+}
+
+
+
+//==================================================================
+//funcion auxiliar getUTCMinutes() elimina el 0 del 1-10
+//==================================================================
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function getUTChm(utc) {
+  var d = new Date(utc);
+  var h = addZero(d.getUTCHours());
+  var m = addZero(d.getUTCMinutes());
+  return   h + ":" + m ;
+}
+
+
+function sumarDias(fecha, dias){
+  fecha.setDate(fecha.getDate() + dias);
+  return fecha;
+}
+
+
+}// End onLoad
+
+
+
+    
+   ;
+
+/*
+Este formato está definido por el estándar práctico sensible, ISO 8601. La T separa 
+la porción de la fecha de la porción de la hora del día. La Z al final significa UTC 
+(es decir, un desplazamiento desde UTC de cero horas-minutos-segundos). La Z se pronuncia 
+"Zulu"
+
+let evenements = {
+
+        ok:true,
+        events: [{
+        "title":"Live Coding tamaño mayor - démo",
+        "start":"2020-07-02 16:00:00",
+        "end":"02 July 2020 22:48 UTC"},
+        {
+        "title":"Live Coding - démo",
+        "start":"2020-07-02 14:00:00",
+        "end":"2020-07-02 16:00:00"},
+        {
+        "id": "1",
+        "title": "titulo",
+        "description": "descripcion",
+        "start": "2020-07-03T10:00:00Z",
+        "end": "2020-07-03T14:48:00.000Z",
+        "backgroundColor": "112"
+        }]
+    }
+    
+// trabajar con fchas 
+//https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=846:formato-fechas-javascript-tostring-tolocaledatestring-tolocaletimestrig-totimestring-ejemplo-cu01163e&catid=78&Itemid=206
+*/
+</script>

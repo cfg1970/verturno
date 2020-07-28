@@ -1,0 +1,175 @@
+
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mi turno</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  
+  
+<link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+   
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+ 
+  <link rel="stylesheet" href="css/flash.min.css">
+</head>
+
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <div class="card">
+      <div class="card-header"> Account Register 
+      </div>
+      <div class="card-body">
+        <form id="form">
+          <div class="form-group">
+            <input type="text" class="form-control required" id="name" placeholder="Name"  name="nombre"> 
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control required" id="nomNegocio" placeholder="Nombre comercial"  name="nomNegocio"> 
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control required" id="phone" placeholder="Telefono"  name="phone"> 
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control required" id="direccion" placeholder="Direccion"  name="direccion"> 
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control required" id="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control required" id="password" placeholder="Password" >
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control required" id="confirm_password" placeholder="Confirm Password">
+        </div>
+         
+        </form> <button class="btn btn-primary btn-block" id="btnReg">  Signup 
+          </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+window.onload = function() {
+ 
+
+var form = document.getElementById("form");
+form.addEventListener("focus", function( event ) {
+  event.target.style.background = "#F7F7F7";    
+}, true);
+form.addEventListener("blur", function( event ) {
+  event.target.style.background = "";    
+}, true);
+
+
+document.getElementById("btnReg").addEventListener("click", function(event){
+  event.preventDefault();
+  if( manejadorValidacion() ) {
+    enviar();
+  } 
+});
+
+
+
+function manejadorValidacion() {
+
+  var namePattern = "^[a-z A-Z]{4,30}$";
+  var emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$";
+
+  if(!checkInput(document.getElementById('name') , namePattern)){
+    window.FlashMessage.error('Ingrese nombre valido minimo 4 caracteres', {progress: true,timeout: 2000});
+    return false;
+  }
+  if(!checkInput(document.getElementById('email') , emailPattern)){
+      window.FlashMessage.error('Ingrese email valido', {progress: true,timeout: 2000});
+      return false;
+  }
+  if(document.getElementById('password').value === ''){
+          window.FlashMessage.error('contraseña vacia', {progress: true,timeout: 2000});
+          return false;
+  }
+  if(!document.getElementById('confirm_password').value != ''){
+             window.FlashMessage.error('confirm password vacio', {progress: true,timeout: 2000});
+             return false;
+  }
+  if(document.getElementById('confirm_password').value != 
+     document.getElementById('password').value){
+    window.FlashMessage.error('cntraseñas np coinciden', {progress: true,timeout: 2000});
+    return false;
+  }
+  return true;
+}
+
+function checkInput(idInput, pattern) {
+return idInput.value.match(pattern) ? true : false;
+}
+
+function enviar(){
+  var url = 'http://localhost:3000/usuario';
+  var data = {
+    nombre: document.getElementById('name').value, 
+    email:  document.getElementById('email').value,
+    password:  document.getElementById('password').value, 
+    direccion : document.getElementById('direccion').value,
+    nomNegocio:document.getElementById('nomNegocio').value, 
+    phone:document.getElementById('phone').value ,
+    role: 'USER_ROLE'
+  };
+
+  fetch( url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json' ,  
+        }
+  })
+    .then( res => res.json()  )
+    .catch(error => console.error('Error:', error))
+    .then(response => {
+      successfull(response)
+          console.log('Success:', response  );
+          
+    });
+}
+
+
+
+function successfull(response){
+  if(response.ok){
+    alert('00');
+    window.FlashMessage.success('Nuevo usuario registrado, sera redirigido', {progress: true,timeout: 5000});
+    window.location.href = '/signin';
+  }else{
+  window.FlashMessage.error('Ocurrio un error', {progress: true,timeout: 5000});
+
+  }
+
+}
+};
+</script>
+</script>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/flash.min.js"></script>
+
+
+
+</body>
+
+</html>

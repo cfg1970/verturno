@@ -1,0 +1,1254 @@
+<!--
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-telephone" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3.925 1.745a.636.636 0 0 0-.951-.059l-.97.97c-.453.453-.62 1.095-.421 1.658A16.47 16.47 0 0 0 5.49 10.51a16.471 16.471 0 0 0 6.196 3.907c.563.198 1.205.032 1.658-.421l.97-.97a.636.636 0 0 0-.06-.951l-2.162-1.682a.636.636 0 0 0-.544-.115l-2.052.513a1.636 1.636 0 0 1-1.554-.43L5.64 8.058a1.636 1.636 0 0 1-.43-1.554l.513-2.052a.636.636 0 0 0-.115-.544L3.925 1.745zM2.267.98a1.636 1.636 0 0 1 2.448.153l1.681 2.162c.309.396.418.913.296 1.4l-.513 2.053a.636.636 0 0 0 .167.604L8.65 9.654a.636.636 0 0 0 .604.167l2.052-.513a1.636 1.636 0 0 1 1.401.296l2.162 1.681c.777.604.849 1.753.153 2.448l-.97.97c-.693.693-1.73.998-2.697.658a17.47 17.47 0 0 1-6.571-4.144A17.47 17.47 0 0 1 .639 4.646c-.34-.967-.035-2.004.658-2.698l.97-.969z"/>
+            </svg> 
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <div class="card mt-4 text-center">
+    
+       
+      <div class="card-body">
+        <form action="/users/signin" method="POST">
+
+      
+
+      <div class="form-group">
+       <p>Ingresar numero completo 0...15...</p>
+        
+        <div class="input-group input-group-lg">
+          
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="colorSvg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </span>
+           
+          </div>
+          <input type="text" id="phone" class="form-control" placeholder="0357215676767" >
+                
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <button class="btn btn-secondary btn-block" id="btn">
+            ver mis turnos
+        </button>
+      </div>
+        </form>
+      </div>
+
+    
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div id="calendrier"></div>
+</div>
+
+
+
+<script>
+  window.onload = () => {
+    var phone='123';
+    $(document).on('click','#btn',function(){
+        phone = $("#phone").val();
+        console.log(phone);
+        //calendar.refetchEvents ();
+
+
+
+    // On va chercher la div dans le HTML
+    let calendarEl = document.getElementById('calendrier');
+    // On instancie le calendrier
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+
+    plugins: [ 'dayGrid' ],
+    defaultView: 'dayGridMonth',
+    allDaySlot :false,
+    locale :'Es',
+    buttonText: {
+                  today:    'Hoy',
+             
+                  week:     'Semana',
+                  day:      'Dia',
+                  list:     'Lista'
+              },
+    
+    timeZone: 'UTC',
+    height: 'auto',
+    //events:evenements,
+    events:'http://localhost:4000/phone/events?phone='+$("#phone").val(),
+        
+    
+    
+                
+   
+  });
+        // On affiche le calendrier
+    calendar.render();
+
+        
+        return false;
+    });
+
+
+  }
+</script>
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icon-css-ar" viewBox="0 0 640 480"  width="1em" height="1em"  class="bi bi-telephone" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#74acdf" d="M0 0h640v480H0z"/>
+  <path fill="#fff" d="M0 160h640v160H0z"/>
+  <g id="c" transform="translate(-64) scale(.96)">
+    <path id="a" fill="#f6b40e" stroke="#85340a" stroke-width="1.1" d="M396.8 251.3l28.5 62s.5 1.2 1.3.9c.8-.4.3-1.5.3-1.5l-23.7-64m-.7 24.1c-.4 9.4 5.4 14.6 4.7 23-.8 8.5 3.8 13.2 5 16.5 1 3.3-1.3 5.2-.3 5.7s3-2.1 2.4-6.8c-.7-4.6-4.2-6-3.4-16.3.8-10.3-4.2-12.7-3-22"/>
+    <use width="100%" height="100%" transform="rotate(22.5 400 250)" xlink:href="#a"/>
+    <use width="100%" height="100%" transform="rotate(45 400 250)" xlink:href="#a"/>
+    <use width="100%" height="100%" transform="rotate(67.5 400 250)" xlink:href="#a"/>
+    <path id="b" fill="#85340a" d="M404.3 274.4c.5 9 5.6 13 4.6 21.3 2.2-6.5-3.1-11.6-2.8-21.2m-7.7-23.8l19.5 42.6-16.3-43.9"/>
+    <use width="100%" height="100%" transform="rotate(22.5 400 250)" xlink:href="#b"/>
+    <use width="100%" height="100%" transform="rotate(45 400 250)" xlink:href="#b"/>
+    <use width="100%" height="100%" transform="rotate(67.5 400 250)" xlink:href="#b"/>
+  </g>
+  <use width="100%" height="100%" transform="rotate(90 320 240)" xlink:href="#c"/>
+  <use width="100%" height="100%" transform="rotate(180 320 240)" xlink:href="#c"/>
+  <use width="100%" height="100%" transform="rotate(-90 320 240)" xlink:href="#c"/>
+  <circle cx="320" cy="240" r="26.7" fill="#f6b40e" stroke="#85340a" stroke-width="1.4"/>
+  <path id="h" fill="#843511" d="M329.1 234.3c-1.8 0-3.6.8-4.6 2.4 2 1.9 6.6 2 9.7-.2a7 7 0 00-5.1-2.2zm0 .4c1.7 0 3.4.8 3.6 1.6-2 2.3-5.3 2-7.4.4a4.3 4.3 0 013.8-2z"/>
+  <use width="100%" height="100%" transform="matrix(-1 0 0 1 640.2 0)" xlink:href="#d"/>
+  <use width="100%" height="100%" transform="matrix(-1 0 0 1 640.2 0)" xlink:href="#e"/>
+  <use width="100%" height="100%" transform="translate(18.1)" xlink:href="#f"/>
+  <use width="100%" height="100%" transform="matrix(-1 0 0 1 640.2 0)" xlink:href="#g"/>
+  <path fill="#85340a" d="M316 243.7a1.9 1.9 0 101.8 2.9 4 4 0 002.2.6h.2a3.9 3.9 0 002.3-.6 1.9 1.9 0 101.8-3c.5.3.8.7.8 1.3 0 .6-.5 1.2-1.2 1.2a1.2 1.2 0 01-1.2-1.2 3 3 0 01-2.6 1.7 3 3 0 01-2.5-1.7 1.2 1.2 0 01-1.3 1.2c-.6 0-1.2-.6-1.2-1.2s.3-1 .8-1.2zm2 5.5c-2.1 0-3 1.8-4.8 3 1-.4 1.9-1.2 3.3-2s2.7.2 3.5.2c.8 0 2-1 3.5-.2 1.4.8 2.3 1.6 3.3 2-1.9-1.2-2.7-3-4.8-3a5.5 5.5 0 00-2 .6 5.5 5.5 0 00-2-.7z"/>
+  <path fill="#85340a" d="M317.2 251.6c-.8 0-1.8.2-3.4.6 3.7-.8 4.5.5 6.2.5 1.6 0 2.4-1.3 6.1-.5-4-1.2-4.9-.4-6.1-.4-.8 0-1.4-.3-2.8-.2z"/>
+  <path fill="#85340a" d="M314 252.2h-.8c4.3.5 2.3 3 6.8 3s2.5-2.5 6.8-3c-4.5-.4-3.1 2.3-6.8 2.3-3.5 0-2.4-2.3-6-2.3zm9.7 6.7a3.7 3.7 0 00-7.4 0 3.8 3.8 0 017.4 0z"/>
+  <path id="e" fill="#85340a" d="M303.4 234.3c4.7-4.1 10.7-4.8 14-1.7a8 8 0 011.5 3.5c.4 2.3-.3 4.8-2.1 7.4l.8.4a14.6 14.6 0 001.6-9.4 13.3 13.3 0 00-.6-2.3c-4.5-3.7-10.7-4-15.2 2z"/>
+  <path id="d" fill="#85340a" d="M310.8 233c2.7 0 3.3.7 4.5 1.7 1.2 1 1.9.8 2 1 .3.2 0 .8-.3.6-.5-.2-1.3-.6-2.5-1.6s-2.5-1-3.7-1c-3.7 0-5.7 3-6.2 2.8-.3-.2 2.1-3.5 6.2-3.5z"/>
+  <use width="100%" height="100%" transform="translate(-18.4)" xlink:href="#h"/>
+  <circle id="f" cx="310.9" cy="236.3" r="1.9" fill="#85340a"/>
+  <path id="g" fill="#85340a" d="M305.9 237.5c3.5 2.7 7 2.5 9 1.3 2-1.3 2-1.7 1.6-1.7-.4 0-.8.4-2.4 1.3-1.7.8-4.1.8-8.2-.9z"/>
+</svg>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mi turno</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/scrolling-nav.css" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="fullcalendar/core/main.css">
+  <link rel="stylesheet" href="fullcalendar/daygrid/main.css">
+  <link rel="stylesheet" href="fullcalendar/timegrid/main.css">
+  <link rel="stylesheet" href="fullcalendar/interaction/main.css">
+  <link rel="stylesheet" href="fullcalendar/list/main.css">
+
+  <!-- Flash messagges -->
+  <link rel="stylesheet" href="css/flash.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  {{> navigation }}
+
+
+
+
+
+  <div class="buscador">
+  
+    {{> header }}
+
+  </div>
+
+  {{> sectionCalendario}}
+
+
+  {{> sectionServices}}
+
+  {{> sectionContact}}
+
+
+
+  {{> footer }}
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="js/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+  
+<script>
+  var buttonHtml;
+  var login=false;
+ 
+  window.onload = function () {
+
+
+  //======================================================================
+  //======================================================================
+  //                          INICIALIZACION
+  //
+  // recupero el usuario 
+  // Parse - JWT - Obtener Payload y fecha de creación y expiración
+  // exp: 1595445237  
+  // iat: 1595445177
+  // usuario:
+  //    email: "cfg1970@gmail.com"
+  //    estado: true
+  //    google: false
+  //    nombre: "claudio"
+  //    role: "ADMIN_ROLE"
+  //    _id: "5f120a38a2710d0c14216528"
+  //======================================================================
+  //======================================================================
+
+
+  var U={};
+  if( localStorage.getItem('token')){
+    U= parseJwt(localStorage.getItem('token'));
+    //cargo el role
+  } else{
+    U.usuario={role:'ROLE_INV'};
+  }
+  console.log(U.usuario.role);
+  setRole(U.usuario.role);
+    
+
+  function setRole( role ){
+    if(role=='ROLE_INV' ){
+      $('.buscador').show();
+      $("#navegacion").append(
+                  '<li class="nav-item>">' +
+                  '<a class="nav-link js-scroll-trigger" href="/signin">Login</a>' +
+                  '</li>' +
+                  '<li class="nav-item>">' +
+                  '<a class="nav-link js-scroll-trigger" href="/signup">Registro</a>' +
+                  '</li>');
+    }else{
+      $('.buscador').hide();
+      $("#navegacion").append('<a class="nav-link js-scroll-trigger" id="logout" href="">LogOut</a>');
+      $('#logout').on('click', function() {
+              localStorage.removeItem("token");
+              window.location.href = '/#about';
+      });
+    }
+  }
+
+
+function newSession(){
+  localStorage.removeItem("token");
+  setRole('ROLE_INV');
+  window.location.href = '/signin';
+}
+
+
+
+
+  function parseJwt (token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace('-', '+').replace('_', '/');
+      return JSON.parse(window.atob(base64));
+  };
+ 
+
+
+    //======================================================================
+    //======================================================================
+    // consulto token si esta autenticado el usuario para 
+    // mostrar link login logout 
+    //======================================================================
+    //======================================================================
+/*
+
+    var url = 'http://localhost:3000/isUsuario';
+    const token = window.localStorage.getItem('token');
+    fetch(url, {
+      method: 'GET', // or 'PUT' 
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token
+      }
+    })
+      .catch(error => console.error('Error:', error))
+      .then(res => res.json())
+      .then(response => {
+        if (response.ok == true) {
+          login=true;
+          $("#navegacion").append('<a class="nav-link js-scroll-trigger" id="logout" href="">LogOut</a>');
+          $('#logout').on('click', function() {
+            localStorage.removeItem("token");
+            window.location.href = '/#about';
+          });
+        } else {
+          login=false;
+          $("#navegacion").append(
+            '<li class="nav-item>">' +
+            '<a class="nav-link js-scroll-trigger" href="/signin">Login</a>' +
+            '</li>' +
+            '<li class="nav-item>">' +
+            '<a class="nav-link js-scroll-trigger" href="/sigup">Registro</a>' +
+            '</li>');
+        }
+      });
+
+    
+  
+    */
+
+
+
+    //======================================================================
+    //======================================================================
+    // Calendario 
+    // 
+    //======================================================================
+    //======================================================================
+    let calendarEl = document.getElementById('calendrier');
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+      // On charge le composant "dayGrid"
+      plugins: ['dayGrid', 'dayGridWeek', 'list', 'interaction', 'timeGrid'],
+      defaultView: 'dayGridMonth',
+
+      slotDuration: '00:15:00',
+      minTime: '06:00:00',
+      maxTime: '22:00:00',
+      allDaySlot: false,
+      header: {
+        left: 'prev,next today',
+       
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      locale: 'Es',
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Dia',
+        list: 'Lista'
+      },
+      selectable: true,
+      editable: true,
+      timeZone: 'UTC',
+      height: 'auto',
+      //events:evenements, 
+      eventSourceSuccess: function (content, xhr) {
+     
+        return content.events;
+      },
+      events: getEvents,
+
+      //events:'http://localhost:3000/calendar/events',
+      //'http://localhost:4000/calendar/events?desde="2020-07-07T10:00:00Z"&hasta="2020-07-09T10:00:00Z"',
+
+      eventRender: eventRender,
+      eventDrop: (info) => {
+        // alert( info.event.start);
+        //console.log(info.event, info.dateStr, info.view.type);
+      },
+      eventResize: eventResize,
+      select: addEvent,
+
+
+      //dateClick : addEvent,
+      unselect: function (info) {
+        //alert('unselect');
+      },
+
+      eventClick: eventClick,
+      datesRender: rangoRender,
+      eventDragStart: eventDragStart, //Se activa cuando comienza el arrastre de eventos
+      eventDrop: eventDrop, //Se activa cuando se detiene el arrastre y el evento se ha movido a un día / hora diferente
+      eventResizeStart: eventResizeStart,
+      eventResizeStop: eventResizeStop,
+      eventDragStop: eventDragStop, //Se activa cuando se detiene el arrastre de eventos.
+      drop: drop,
+      eventPositioned:eventPositioned,
+    });
+    calendar.render();
+
+
+
+function eventPositioned(info){
+  console.log('eventPositioned');
+}
+
+    //==========================================================================================
+    //  la fuente de evento es automatica cuando se pulsa teclas cambio de mes o cambio de vista
+    //  https://fullcalendar.io/docs/v4/events-function
+    //  se puede usar eventSourceSuccess: y events: para hacerlo manualmente y agrego el token
+    //  JWT para pasarlo al servidor. llamo events:getEvents cuando retorna se ejecuta eventSourceSuccess
+    //==========================================================================================
+    function getEvents(info, successCallback, failureCallback) {
+   
+      if(U.usuario.role!='ROLE_INV'){
+        const start = info.start.valueOf();
+        const end = info.end.valueOf();
+        const url = 'http://localhost:3000/calendar/events?start=' + start + '&end=' + end;
+        const token = window.localStorage.getItem('token');
+        fetch(url, {
+          method: 'GET', // or 'PUT'
+          //body: JSON.stringify(data), 
+          headers: {
+            'Content-Type': 'application/json',
+            'token': token
+          }
+        })
+          .catch(error => console.error('Error:', error))
+          .then(res => res.json())
+          .then(response => {
+            //console.log('getEvents');
+            //console.log('Success:', response);
+            
+            //console.log(response.events);
+            if(response.ok==true){
+              response.events.forEach(element => {  // recupero los eventos y agrego id
+                element.id=element._id;
+              });
+              window.FlashMessage.info('Agenda cargada', { progress: true, timeout: 3000 });
+              successCallback(response);  // implementado por fullcalendar
+            }else{
+              window.FlashMessage.error('Vuelva a iniciar session', { progress: true, timeout: 2000 });
+
+              localStorage.removeItem("token");
+              setRole('ROLE_INV');
+              window.location.href = '/signin';
+
+            }
+            //const aaa=JSON.stringify(response.events);
+       
+
+          });//then
+      }else{
+        //el visitante es un invitado
+        
+      $(document).on('click', '#consultar', function () {
+        const start = info.start.valueOf();
+        const end = info.end.valueOf();
+        const phone= $('#phone').val();
+        const url = 'http://localhost:3000/turnos?start=' + start + '&end=' + end+'&phone='+phone;
+        
+        fetch(url, {
+          method: 'GET', // or 'PUT'
+          //body: JSON.stringify(data), 
+          headers: {
+            'Content-Type': 'application/json',
+          
+          }
+        })
+          .catch(error => console.error('Error:', error))
+          .then(res => res.json())
+          .then(response => {
+            console.log(response);
+         
+            if(response.ok==true){
+              response.events.forEach(element => {  // recupero los eventos y agrego id
+                element.id=element._id;
+              });
+              window.FlashMessage.info('Agenda cargada', { progress: true, timeout: 3000 });
+              successCallback(response);  // implementado por fullcalendar
+            }else{
+              window.FlashMessage.error('No hay turnos o numero incorrecto', { progress: true, timeout: 2000 });
+
+              
+
+            }
+            //const aaa=JSON.stringify(response.events);
+       
+
+          });//then
+          
+      });//onClick
+
+      }//else
+
+    }
+
+
+
+    
+    //==================================================================
+    //  eventResize: eventResize
+    //  Se activa cuando el cambio de tamaño se detiene y el evento ha cambiado en duración.
+    //  https://fullcalendar.io/docs/v4/eventResize
+    //==================================================================
+      
+    function eventResize(info) {
+      console.log('eventResize');
+      console.log(info.event.extendedProps._id);
+      const token = window.localStorage.getItem('token');
+      // UPDATE 
+      var url = 'http://localhost:3000/calendar/update/' + info.event.extendedProps._id;
+
+      var data = {
+        title: info.event.title,
+        description: info.event.description,
+        start: info.event.start.toISOString(),
+        end: info.event.end.toISOString(),
+        backgroundColor: info.event.background,
+
+      };
+      fetch(url, {
+        method: 'PUT', // or 'PUT'
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token,
+
+        }
+      })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+
+          if(response.ok==true){
+            window.FlashMessage.info('Actualizado con exito', { progress: true, timeout: 3000 });
+            }else{
+            window.FlashMessage.error('Vuelva a iniciar session', { progress: true, timeout: 3000 });
+            newSession();
+
+         
+          //calendar.refetchEvents (); 
+            }  
+        });
+
+    }
+
+
+    //==================================================================
+    //  drop:drop,
+    // Se invoca cuando un elemento externo arrastrable o un evento de otro calendario se ha 
+    // soltado en el calendario
+    //==================================================================
+    function drop(info) {
+      console.log('drop');
+
+
+    }
+
+
+
+    //==================================================================
+    //  eventDragStop:eventDragStop
+    // Se activa cuando se detiene el arrastre de eventos.Se garantiza que esta devolución de 
+    // llamada se activará después de que el usuario arrastre un evento, incluso si el evento no 
+    // cambia la fecha / hora. Se activa antes de que se haya modificado la información del evento 
+    // (si se ha movido a una nueva fecha / hora) y antes de que se active la devolución de llamada
+    // eventDrop .
+    // https://fullcalendar.io/docs/v4/eventDragStop
+    //==================================================================
+    function eventDragStop(info) {
+      console.log('eventDragStop');
+    }
+
+
+
+    //==================================================================
+    //  eventResizeStop : eventResizeStop
+    // Se activa cuando se detiene el cambio de tamaño del evento.
+    // https://fullcalendar.io/docs/v4/eventResizeStop
+    //==================================================================
+    function eventResizeStop(info) {
+      console.log('eventResizeStop');
+
+    }
+
+
+
+    //==================================================================
+    //  eventResizeStart : eventResizeStart
+    // Se activa cuando comienza el cambio de tamaño del evento.
+    // https://fullcalendar.io/docs/v4/eventResizeStart
+    //==================================================================
+    function eventResizeStart(info) {
+      console.log('eventResizeStart');
+    }
+
+
+
+
+    //==================================================================
+    // eventDrop:eventDrop
+    // Se activa cuando se detiene el arrastre y el evento se ha movido a un día / hora diferente .
+    // https://fullcalendar.io/docs/v4/eventDrop
+    //==================================================================
+    function eventDrop(info) {
+      console.log('eventDrop');
+      //console.log(info);
+      const token = window.localStorage.getItem('token');
+      // UPDATE 
+
+      var url = 'http://localhost:3000/calendar/update/' + info.event.extendedProps._id;
+      console.log(url);
+      var data = {
+        title: info.event.title,
+        description: info.event.description,
+        start: info.event.start.toISOString(),
+        end: info.event.end.toISOString(),
+        backgroundColor: info.event.background,
+
+      };
+      fetch(url, {
+        method: 'PUT', // or 'PUT'
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token,
+        }
+      })
+        .then(res => res.json())
+        .catch(error => {
+          console.error('Error:', error);
+          alert('login de nuevo');
+        })
+        .then(response => {
+          console.log('Success:', response);
+          //console.log(typeof response);
+          if(response.ok==true){
+            window.FlashMessage.info('Actualizado con exito', { progress: true, timeout: 3000 });
+        
+          }else{
+            window.FlashMessage.error('Sesion expiro ,vuelva a iniciar session', { progress: true, timeout: 5000 });
+           newSession();
+          }
+            //calendar.refetchEvents ();
+        });
+
+    }
+
+
+
+    //==================================================================
+    // eventDragStart
+    // Se activa cuando comienza el arrastre de eventos
+    // https://fullcalendar.io/docs/v4/event-dragging-resizing
+    //==================================================================
+    function eventDragStart(info) {
+      console.log('eventDragStart');
+
+
+    }
+
+
+
+
+    //==================================================================
+    // datesRender: rangoRender
+    // https://fullcalendar.io/docs/v4/datesRender
+    // Triggered when a new set of dates has been rendered.
+    // set variables globales para la consulta por rango a la base de datos
+    // https://fullcalendar.io/docs/v4/date-object
+    // 
+    //==================================================================
+    function rangoRender(info) {
+      console.log('eventResize');
+
+      /* start = new Date(info.view.activeStart);  
+       end = new Date (info.view.activeEnd  );   
+       activeStart = start;
+       activeEnd = end;
+     */
+
+      //console.log(start.toISOString()+':'+ end.toISOString());
+
+
+    }
+
+    //==================================================================
+    // eventRender: eventRender
+    // Se dispara mientras se procesa un evento. Un gancho para modificar su DOM
+    // La función también puede devolver un elemento nuevo que se utilizará para renderizar.
+    // Para eventos de fondo de todo el día , debe asegurarse de devolver a <td>.
+    //  https://fullcalendar.io/docs/v4/eventRender
+    //
+    //  View Object   https://fullcalendar.io/docs/v4/view-object
+    //  Un objeto view contiene información sobre una vista de calendario, como el título y el 
+    //  rango de fechas. Esta información sobre la vista actual se pasa a casi todos los 
+    //  controladores .
+    //==================================================================
+    function eventRender(info) {
+      console.log('eventRender');
+
+      var html = info.el;
+      //console.log(info.event.extendedProps._id);
+      //console.log(html);
+
+
+
+      const variable = 'background-color: transparent; color: #1c100b;';
+      html.style.cssText = variable;
+      //agregar el id
+      //html.setAttribute('data-value', info.event.extendedProps._id);
+
+      /*
+        //* Aqui el tooltip
+          html.setAttribute('data-toggle', 'tooltip');
+          html.setAttribute('data-placement', "right");
+          html.setAttribute('data-original-title',
+              '<p class="card-title">'+info.event.extendedProps.description+' </p>'+
+                '<span  class=""> '+getUTChm(info.event.start)+
+                ' hasta '+getUTChm(info.event.end)+'</span>'           
+                          );
+          // info.el agregarle clase data-toggle="tooltip" 
+          $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip({
+              html : true
+            });  
+          }); // Fin function eventRender
+      
+      
+      
+      */
+
+
+
+
+
+
+
+
+
+      //element.style.backgroundColor = "#e07b39";
+
+
+
+      //console.log( info.view.activeStart );
+      /*console.log(info.el);
+      if(event.title) {
+        element.css('background-color', backgroundColor);
+          //console.log('si');
+        }*/
+
+      /* var tooltip = new Tooltip(info.el, {
+         title: info.event.extendedProps.description,
+         placement: 'top',
+         trigger: 'hover',
+         container: 'body'
+       );*/
+    }
+
+
+
+
+
+
+    //==================================================================
+    //  select: addEvent
+    //  agrega un nuevo evento al calendario
+    //
+    //==================================================================
+    function addEvent(info) {
+      console.log('addEvent');
+      var modalObject = {
+        titleEvent: '',
+        descriptionEvent: '',
+        start: info.startStr,
+        end: info.endStr,
+        btnAdd: true,
+        btnUpdate: false,
+        btnDelete: false,
+        id: '',
+        phoneEvent: ''
+      }
+
+      //si se produce en dayGridMonth a dia se resta 1
+      if (calendar.view.type == 'dayGridMonth') {
+        let fecha = new Date(modalObject.end);
+        modalObject.end = sumarDias(fecha, -1).toISOString();
+      }
+      modal(modalObject);
+      //calendar.changeView('dayGridMonth');
+
+    }
+
+
+
+    //==================================================================
+    //   eventClick : eventClick
+    //   Se activa cuando el usuario hace clic en un evento.
+    //==================================================================
+    function eventClick(info) {
+      console.log('eventClick');
+
+      var modalObject = {
+        titleEvent: info.event.title,
+        descriptionEvent: info.event.extendedProps.description,
+        start: info.event.start,
+        end: info.event.end,
+        btnAdd: false,
+        btnUpdate: true,
+        btnDelete: true,
+        id: info.event.extendedProps._id,
+        phoneEvent: info.event.extendedProps.phone
+      }
+      
+
+      modal(modalObject);
+    }
+
+
+
+
+
+    //==================================================================
+    //
+    // Boton DELETE btnDelete
+    //
+    //==================================================================
+    $(document).on('click', '#btnDelete', function () {
+
+      console.log('delete');
+      var url = 'http://localhost:3000/calendar/delete/' + $('#id').val();
+      console.log(url);
+      var data = {};
+      const token = window.localStorage.getItem('token');
+      fetch(url, {
+        method: 'DELETE',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token
+        }
+      })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+          console.log('Success:', response);
+
+          if(response.ok==true){
+            window.FlashMessage.info('Eliminado con exito', { progress: true, timeout: 3000 });
+            //calendar.refetchEvents ();
+            //calendar.rerenderEvents();
+            var evento = calendar.getEventById(response.event._id);
+           
+            evento.remove();
+          }else{
+            window.FlashMessage.error('Sesion expiro ,vuelva a iniciar session', { progress: true, timeout: 5000 });
+          
+            //roleActual('ROLE_INV');
+           newSession();
+          }       
+        });
+    });
+
+
+
+    //==================================================================
+    // Boton UPDATE btnUpdate
+    // Usa fetch() para enviar una petición POST con datos codificados en JSON .
+    // start      2020:07:05T__:__:00Z
+    // hourStart             12:12
+    //==================================================================
+    $(document).on('click', '#btnUpdate', function () {
+      console.log('#btnUpdate');
+
+      var aux= $('#hoursStart').val().split(' ')[0] ; //elimino AM-PM
+      if( aux.length == 4 ) aux='0'+aux;  // agrego 0 si no lo tiene
+      start=$('#start').val().split('T')[0] + 'T' + aux +'Z';
+      console.log('resultado'+start);
+
+      aux= $('#hoursEnd').val().split(' ')[0] ; //elimino AM-PM
+      if( aux.length == 4 ) aux='0'+aux;  // agrego 0 si no lo tiene
+      end=$('#end').val().split('T')[0] + 'T' + aux +'Z';
+      console.log('resultado'+end);
+
+      strStart=new Date(start);
+      strEnd=new Date(end);
+   
+      if ($('#titleEvent').val().length && $('#descriptionEvent').val().length &&
+          strStart < strEnd ) {
+        const token = window.localStorage.getItem('token');
+        var url = 'http://localhost:3000/calendar/update/' + $('#id').val();
+        console.log(url);
+        var data = {
+          title: $('#titleEvent').val(),
+          description: $('#descriptionEvent').val(),
+          start: start,
+          end: end,
+          backgroundColor: 'fff',
+          phone: $('#phone').val()
+        };
+        fetch(url, {
+          method: 'PUT', // or 'PUT'
+          body: JSON.stringify(data),
+          headers: {
+
+            'Content-Type': 'application/json',
+            'token': token,
+          }
+        })
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(response => {
+            console.log('Success:', response);
+            //console.log(typeof response);
+
+
+          if(response.ok==true){
+            window.FlashMessage.info('Actualizado con exito', { progress: true, timeout: 3000 });
+            //modifico el evento para mostrarlo correctamente en la pagina sin llamar al servidor
+            var evento = calendar.getEventById($('#id').val());
+            evento.setProp('title', response.event.title);
+            evento.setStart( response.event.start);
+            evento.setEnd(response.event.end);
+            evento.setExtendedProp( 'description', response.event.description );
+            evento.setExtendedProp( 'phone', response.event.phone );
+
+          console.log(evento.title);
+          calendar.render();
+          }else{
+            window.FlashMessage.error('Sesion expiro ,vuelva a iniciar session', { progress: true, timeout: 5000 });
+            newSession();
+
+          }
+
+          //calendar.refetchEvents();
+
+
+          
+          });
+
+      }
+    });
+
+
+
+
+
+
+    //==================================================================
+    // Boton AGREGAR btnagregar
+    // Usa fetch() para enviar una petición POST con datos codificados en JSON .
+    //==================================================================
+    $(document).on('click', '#btnagregar', function () {
+      console.log('agregar');
+
+      var aux= $('#hoursStart').val().split(' ')[0] ; //elimino AM-PM
+      if( aux.length == 4 ) aux='0'+aux;  // agrego 0 si no lo tiene
+      start=$('#start').val().split('T')[0] + 'T' + aux +'Z';
+      console.log('resultado'+start);
+
+      aux= $('#hoursEnd').val().split(' ')[0] ; //elimino AM-PM
+      if( aux.length == 4 ) aux='0'+aux;  // agrego 0 si no lo tiene
+      end=$('#end').val().split('T')[0] + 'T' + aux +'Z';
+      console.log('resultado'+end);
+
+      strStart=new Date(start);
+      strEnd=new Date(end);
+   
+      //verificacion que haya texto en los campos
+      if ($('#titleEvent').val().length && $('#descriptionEvent').val().length &&
+          strStart < strEnd ) {
+        const token = window.localStorage.getItem('token');
+        var url = 'http://localhost:3000/calendar/add';
+        var data = {
+          title: $('#titleEvent').val(),
+          description: $('#descriptionEvent').val(),
+          start: start,
+          end: end,
+          backgroundColor: 'fff',
+          phone: $('#phone').val()
+
+        };
+        fetch(url, {
+          method: 'POST', // or 'PUT'
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'token': token,
+          }
+        })
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error))
+          .then(response => {
+            console.log('Success:', response);
+            if(response.ok){
+              console.log(calendar.event);
+              var eventObject = {
+                    title:response.event.title,
+                    start: response.event.start,
+                    end: response.event.end,
+                    id: response.event._id,
+                    
+                    };
+            
+                 
+                 var  event= calendar.addEvent( eventObject );
+               
+                      event.setExtendedProp('description', response.event.description);
+                      event.setExtendedProp('phone', response.event.phone );
+                      event.setExtendedProp('usuario', response.event.usuario );
+
+                    console.log(event);
+
+              
+              window.FlashMessage.success('Agregado con exito',{progress: true,timeout: 5000,});
+              calendar.render();
+              //calendar.rerenderEvents();
+                    //console.log('getEvents');
+            }else{
+              window.FlashMessage.error('Sesion expiro 1,vuelva a iniciar session', { progress: true, timeout: 5000 });
+             newSession();
+            }
+
+         
+
+            //calendar.refetchEvents();
+          });
+
+
+
+
+      }//if
+    });
+
+
+
+//https://fullcalendar.io/docs/v4/Event-setProp
+    //==================================================================
+    // function modal =>  recibe un objeto 
+    //
+    // 
+    //==================================================================
+    function modal(obj) {
+      console.log('Modal');
+
+
+
+
+      let start = new Date(obj.start);
+      let strStart = start.toISOString();
+      let end = new Date(obj.end);
+      let strEnd = end.toISOString();
+
+
+
+
+      if (calendar.view.type == 'dayGridMonth') { // Mes  2020-07-04
+        //vista del mes 
+        console.log('dayGridMonth');
+      }
+      if (calendar.view.type == 'timeGridWeek') {  // Semana 2020-07-11T06:45:00Z
+        //vista del mes agrego 
+        console.log('timeGridWeek');
+      }
+      if (calendar.view.type == 'timeGridDay') { //2020-07-10T07:00:00Z
+        console.log('timeGridDay');
+      }
+
+      //const date = new Date(obj.start);
+      const dia = start.getUTCDate() + '/' + (start.getUTCMonth() + 1) + '/' + start.getUTCFullYear();
+      const modalHtml =
+        '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+        '<div class="modal-dialog" role="document">' +
+        '<div class="modal-content">' +
+        '<div class="modal-header">' +
+        '<h5 class="modal-title" id="fecha">Fecha  ' + dia + '</h5>' +
+        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+        '</div>' +
+        '<div class="modal-body">' +
+        '<div id="description"></div>' +
+        '<div class="form">' +
+        '<div class="form-group row">' +
+        '<label  class="col-2 col-form-label" id>Telefono</label>' +
+        '<div class="col-10">' +
+        '<input  type="text" class="form-control" id="phone" value="' + obj.phoneEvent + '">' +
+        '</div>' +
+        '</div>' +
+        '<div class="form-group row">' +
+        '<label  class="col-2 col-form-label">Titulo</label>' +
+        '<div class="col-10">' +
+        '<input  type="text" class="form-control" name="titleEvent" id="titleEvent" value="' + obj.titleEvent + '"required />' +
+        '</div>' +
+        '</div>' +
+        '<div class="form-group row">' +
+        '<label  class="col-2 col-form-label">Descripcion</label>' +
+        '<div class="col-10">' +
+        '<textarea class="form-control" id="descriptionEvent"row="3" value="">' + obj.descriptionEvent + '</textarea>' +
+        '</div>' +
+        '</div>' +
+
+
+'<div class="form-group row">' +
+
+  '<label  class="col-2 col-form-label">Desde</label>' +
+
+  '<div class="col-4">'+
+    '<div class="input-group date " id="HS" data-target-input="nearest"> '+
+      '<input type="text" class="form-control datetimepicker-input" data-target="#HS" value="' + getUTChm(obj.start) + '"id="hoursStart"/> '+
+      '<div class="input-group-append" data-target="#HS" data-toggle="datetimepicker">'+
+        '<div class="input-group-text">'+
+            '<svg width="1em" viewBox="0 0 16 16" class="bi bi-alarm" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'+
+                '<path fill-rule="evenodd" d="M8 15A6 6 0 1 0 8 3a6 6 0 0 0 0 12zm0 1A7 7 0 1 0 8 2a7 7 0 0 0 0 14z"/>'+
+                '<path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.053.224l-1.5 3a.5.5 0 1 1-.894-.448L7.5 8.882V5a.5.5 0 0 1 .5-.5z"/>'+
+                '<path d="M.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z"/>'+
+                '<path fill-rule="evenodd" d="M11.646 14.146a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1-.708.708l-1-1a.5.5 0 0 1 0-.708zm-7.292 0a.5.5 0 0 0-.708 0l-1 1a.5.5 0 0 0 .708.708l1-1a.5.5 0 0 0 0-.708zM5.5.5A.5.5 0 0 1 6 0h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>'+
+                '<path d="M7 1h2v2H7V1z"/>'+
+            '</svg>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+
+  '<label  class="col-2 col-form-label">Desde</label>' +
+       
+  '<div class="col-4">'+
+    '<div class="input-group date " id="HE" data-target-input="nearest"> '+
+      '<input type="text" class="form-control datetimepicker-input" data-target="#HE" value="' + getUTChm(obj.end) + '"id="hoursEnd"/> '+
+      '<div class="input-group-append" data-target="#HE" data-toggle="datetimepicker">'+
+        '<div class="input-group-text">'+
+            '<svg width="1em" viewBox="0 0 16 16" class="bi bi-alarm" fill="currentColor" xmlns="http://www.w3.org/2000/svg">'+
+                '<path fill-rule="evenodd" d="M8 15A6 6 0 1 0 8 3a6 6 0 0 0 0 12zm0 1A7 7 0 1 0 8 2a7 7 0 0 0 0 14z"/>'+
+                '<path fill-rule="evenodd" d="M8 4.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.053.224l-1.5 3a.5.5 0 1 1-.894-.448L7.5 8.882V5a.5.5 0 0 1 .5-.5z"/>'+
+                '<path d="M.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z"/>'+
+                '<path fill-rule="evenodd" d="M11.646 14.146a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1-.708.708l-1-1a.5.5 0 0 1 0-.708zm-7.292 0a.5.5 0 0 0-.708 0l-1 1a.5.5 0 0 0 .708.708l1-1a.5.5 0 0 0 0-.708zM5.5.5A.5.5 0 0 1 6 0h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>'+
+                '<path d="M7 1h2v2H7V1z"/>'+
+            '</svg>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+
+/*
+
+        '<div class="col-3">' +
+          '<input data-val="true" class="form-control" id="hoursStart"' +
+          'data-val-regex="Invalid Time." ' +
+          'data-val-regex-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]?$' +
+          'name="StartTime" type="text" value="' + getUTChm(obj.start) + '" />' +
+          '<small id="emailHelp" class="form-text text-muted">desde</small>' +
+        '</div>' +
+
+        '<div class="col-2">' +
+        '<input data-val="true" class="form-control" id="hoursEnd"' +
+        'data-val-regex="Invalid Time."' +
+        'data-val-regex-pattern="^(0[1-9]|1[0-2]):[0-5][0-9] (am|pm|AM|PM)$"' +
+        'name="StartTime" type="time" value="' + getUTChm(obj.end) + '" />' +
+        '<small id="emailHelp" class="form-text text-muted">hasta</small>' +
+        '</div>' +
+*/
+        '</div>' +
+        '<input type="hidden" id="start" name="start" value="' + strStart + '">' +
+        '<input type="hidden" id="end" name="end" value="' + strEnd + '">' +
+        '<input type="hidden" id="id" name="id" value="' + obj.id + '">' +
+        '</div>' +
+        '</div>' +
+        '<div class="modal-footer"  id="modal-footer">' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+     
+      document.getElementById('myModal').innerHTML = modalHtml;//construyo el modal
+       buttonHtml = '<button type="button" class="btn btn-primary" data-dismiss="modal" id="btncancelar">Cancelar</button>';
+      //agrego los botones
+      if (obj.btnAdd)
+        buttonHtml += '<button type="button" class="btn btn-success" data-dismiss="modal"  id="btnagregar" >Agregar</button>';
+      if (obj.btnDelete)
+        buttonHtml += '<button type="button" class="btn btn-danger" data-dismiss="modal"  id="btnDelete">Eliminar</button>';
+      if (obj.btnUpdate)
+        buttonHtml += '<button type="button" class="btn btn-warning" data-dismiss="modal"  id="btnUpdate">Actualizar</button>';
+ 
+        document.getElementById('modal-footer').innerHTML = buttonHtml;
+
+        
+      $('#HS').datetimepicker({
+        format: 'LT',
+      disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 6 })] ]
+      });
+      $('#HE').datetimepicker({
+        format: 'LT',
+        disabledTimeIntervals: [[moment({ h: 0 }), moment({ h: 6 })] ]
+      });       
+    
+      $('#exampleModal').modal();
+     /* if (login) {
+        $('#exampleModal').modal();
+      }*/
+    }
+
+
+
+        //==================================================================
+        //funcion auxiliar getUTCMinutes() elimina el 0 del 1-10
+        //==================================================================
+        function addZero(i) {
+          if (i < 10) {
+            i = "0" + i;
+          }
+          return i;
+        }
+
+        function getUTChm(utc) {
+          var d = new Date(utc);
+          var h = addZero(d.getUTCHours());
+          var m = addZero(d.getUTCMinutes());
+          return h + ":" + m;
+        }
+
+
+        function sumarDias(fecha, dias) {
+          fecha.setDate(fecha.getDate() + dias);
+          return fecha;
+        }
+
+
+
+
+
+  } // onLoad
+</script>
+
+
+  
+
+  <script src="fullcalendar/core/main.js"></script>
+  <script src="fullcalendar/daygrid/main.js"></script>
+  <script src="fullcalendar/timegrid/main.js"></script>
+  <script src="fullcalendar/interaction/main.js"></script>
+  <script src="fullcalendar/list/main.js"></script>
+
+  <!-- flash messagges -->
+  <script src="js/flash.min.js"></script>
+
+  <script src="js/moment.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+
+
+</body>
+
+</html>
+
+

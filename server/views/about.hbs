@@ -1,0 +1,25 @@
+<section class="card">
+  <div class="card-body">
+    <h1>About</h1>
+    <p>
+      Adipisicing lorem laudantium fuga excepturi iste earum? Architecto et sint exercitationem nihil voluptatum? Quae dolores sint fugiat inventore soluta ad Tenetur minima odit qui fugit eveniet minima? Repellat nobis harum quia placeat eveniet fugit voluptatem Pariatur maiores molestiae est quas.
+    </p>
+  </div>
+</section>
+
+<script>
+
+  (async () => {
+  const rawResponse = await fetch('https://httpbin.org/post', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({a: 1, b: 'Textual content'})
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+})();
+</script>

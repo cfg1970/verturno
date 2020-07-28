@@ -1,0 +1,134 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Mi turno</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  
+  
+<link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+   
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+ 
+  <link rel="stylesheet" href="flash.min.css">
+</head>
+
+
+
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <div class="card mt-4 text-center">
+      <div class="card-header">
+        <h1 class="h4">
+          Account Login
+        </h1>
+      </div>
+      <svg width="50%" height="50%" viewBox="0 0 16 16" class="bi bi-calendar2-check mx-auto d-block logo m-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+  <path fill-rule="evenodd" d="M14 2H2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM2 1a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+  <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+  <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
+</svg>
+      <div class="card-body">
+        <form action="/users/signin" method="POST">
+          <div class="form-group">
+            <input type="email" class="form-control" id="email" placeholder="Email" autofocus>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+          </div>
+          <button class="btn btn-primary btn-block" id="btnReg">
+            Signin 
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+
+
+window.onload = function() {
+ 
+ 
+
+
+
+
+document.getElementById("btnReg").addEventListener("click", function(event){
+  event.preventDefault();
+
+  var url = 'http://localhost:3000/login';
+  var data = {
+    email:  document.getElementById('email').value,
+    password:  document.getElementById('password').value, 
+  };
+
+  fetch( url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), 
+        headers:{
+            'Content-Type': 'application/json' ,  
+        }
+  })
+    .then( res => res.json()  )
+    .catch(error => console.error('Error:', error))
+    .then(response => {
+      successfull(response)
+          console.log('Success:', response  );
+          
+    });
+    
+});
+
+
+function successfull(response){
+  if(response.ok){  
+    //=======================
+    //  logeado correctamnte nueva llamada a calendar
+    //=======================
+    localStorage.clear();
+    window.FlashMessage.success('Bienvenido '+ response.usuario.nombre+' redirigido ', {progress: true,timeout: 5000});
+    localStorage.setItem("token", response.token);
+    window.location.href = '/';
+
+  }else{
+    window.FlashMessage.error('Ocurrio un error', {progress: true,timeout: 5000});
+    window.location.href = '/';
+  }
+  
+
+  
+}
+
+
+
+
+
+
+};
+</script>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+
+</html>
